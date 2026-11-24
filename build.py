@@ -7,7 +7,10 @@ for k, f in imgs.items():
     md = re.sub(rf"(### 🖼️ {k} · ANNONSE[^\n]*\n)",
                 rf'\1\n<a href="images/{f}" target="_blank"><img class="ad" src="images/{f}" alt="Annonsebilde {k}"></a>\n\n', md)
 body = markdown.markdown(md, extensions=["tables"])
-nav = "".join(f'<a href="#{i}">{t}</a>' for i, t in [("s1","S1 Ledergruppa"),("s2","S2 Strategi"),("s3","S3 Gründer"),("maalretting","Målretting")])
+perf = (SRC.parent / "ads-performance-2026.md").read_text()
+perf_html = markdown.markdown(perf, extensions=["tables"]).replace("<h2>Ads performance", '<h2 id="performance">Ads performance', 1)
+body = f'<div class="perf">{perf_html}</div>' + body
+nav = "".join(f'<a href="#{i}">{t}</a>' for i, t in [("performance","Performance"),("s1","S1 Ledergruppa"),("s2","S2 Strategi"),("s3","S3 Gründer"),("maalretting","Målretting")])
 body = body.replace("<h2>S1 –", '<h2 id="s1">S1 –').replace("<h2>S2 –", '<h2 id="s2">S2 –').replace("<h2>S3 –", '<h2 id="s3">S3 –').replace("<h2>Målretting", '<h2 id="maalretting">Målretting')
 page = f"""<!DOCTYPE html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Annonser – lederversjon</title>
@@ -30,6 +33,9 @@ blockquote{{margin:0;padding:12px 18px;background:var(--card);border-left:4px so
 img.ad{{width:100%;max-width:560px;display:block;border-radius:10px;box-shadow:0 6px 24px rgba(15,26,43,.15);margin:8px 0 16px}}
 table{{border-collapse:collapse;width:100%;font-size:15px;display:block;overflow-x:auto}}
 td,th{{border:1px solid #D9D4C8;padding:8px 10px;text-align:left;vertical-align:top}}
+
+.perf table{{white-space:nowrap;font-size:14px;width:max-content;max-width:calc(100vw - 32px);position:relative;left:50%;transform:translateX(-50%)}}
+.perf td:first-child{{font-weight:600}}
 code{{background:#ECE7DC;padding:1px 5px;border-radius:4px;font-size:14px;word-break:break-all}}
 hr{{display:none}}
 </style></head><body>
