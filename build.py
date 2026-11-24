@@ -2,7 +2,7 @@
 import re, markdown, pathlib
 SRC = pathlib.Path.home() / "anne-karin-kunsten-a-overbevise/ads/ads-leder-rewrite-nov-2026.md"
 md = SRC.read_text()
-imgs = {"S1": "s1-ledergruppa.png", "S2": "s2-strategi.png", "S3": "s3-grunder.png"}
+imgs = {"S1": "s1-tid.png", "S2": "s2-strategi.png", "S3": "s3-grunder.png"}
 for k, f in imgs.items():
     md = re.sub(rf"(### 🖼️ {k} · ANNONSE[^\n]*\n)",
                 rf'\1\n<a href="images/{f}" target="_blank"><img class="ad" src="images/{f}" alt="Annonsebilde {k}"></a>\n\n', md)
@@ -10,7 +10,7 @@ body = markdown.markdown(md, extensions=["tables"])
 perf = (SRC.parent / "ads-performance-2026.md").read_text()
 perf_html = markdown.markdown(perf, extensions=["tables"]).replace("<h2>Ads performance", '<h2 id="performance">Ads performance', 1)
 body = f'<div class="perf">{perf_html}</div>' + body
-nav = "".join(f'<a href="#{i}">{t}</a>' for i, t in [("performance","Performance"),("s1","S1 Ledergruppa"),("s2","S2 Strategi"),("s3","S3 Gründer"),("maalretting","Målretting")])
+nav = "".join(f'<a href="#{i}">{t}</a>' for i, t in [("performance","Performance"),("s1","S1 Teams og tid"),("s2","S2 Strategi"),("s3","S3 Gründer"),("maalretting","Målretting")])
 body = body.replace("<h2>S1 –", '<h2 id="s1">S1 –').replace("<h2>S2 –", '<h2 id="s2">S2 –').replace("<h2>S3 –", '<h2 id="s3">S3 –').replace("<h2>Målretting", '<h2 id="maalretting">Målretting')
 page = f"""<!DOCTYPE html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Annonser – lederversjon</title>
